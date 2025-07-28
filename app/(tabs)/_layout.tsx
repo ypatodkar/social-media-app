@@ -1,43 +1,119 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import React from 'react'
+import { Tabs } from 'expo-router'
+import { View } from 'react-native'
+import { Ionicons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const ICON_SIZE = 30;
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarShowLabel: false,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "white",
+        tabBarStyle: {
+          backgroundColor: "#6A5ACD",
+          borderTopWidth: 0,
+          position: "absolute",
+          elevation: 0,
+          height: 100,
+          paddingTop: 16,
+          borderTopLeftRadius: 26, 
+          borderTopRightRadius: 26,
+        },
+        tabBarItemStyle: {
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Ionicons name="home" size={ICON_SIZE} color={color} />
+              {focused && (
+                <View
+                  style={{
+                    height: 3,
+                    width: 24,
+                    backgroundColor: 'white',
+                    marginTop: 6, // 👈 this moves it lower
+                    borderRadius: 2,
+                  }}
+                />
+              )}
+            </View>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="bookmarks"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <MaterialCommunityIcons name="wardrobe" size={ICON_SIZE} color={color} />
+              {focused && (
+                <View
+                  style={{
+                    height: 3,
+                    width: 24,
+                    backgroundColor: 'white',
+                    marginTop: 6,
+                    borderRadius: 2,
+                  }}
+                />
+              )}
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="chatbot"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Ionicons name="chatbubble" size={ICON_SIZE} color={color} />
+
+              {focused && (
+                <View
+                  style={{
+                    height: 3,
+                    width: 24,
+                    backgroundColor: 'white',
+                    marginTop: 6,
+                    borderRadius: 2,
+                  }}
+                />
+              )}
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+               <MaterialCommunityIcons name="account" size={ICON_SIZE} color={color} />
+              {focused && (
+                <View
+                  style={{
+                    height: 3,
+                    width: 24,
+                    backgroundColor: 'white',
+                    marginTop: 6,
+                    borderRadius: 2,
+                  }}
+                />
+              )}
+            </View>
+          ),
         }}
       />
     </Tabs>
