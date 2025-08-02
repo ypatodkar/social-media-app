@@ -18,6 +18,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { styles } from "@/styles/auth.styles";
+import { useAuth } from '../../context/AuthContext'; // 👈 Import useAuth
 
 // Import packages for Google Sign-In
 import * as Google from "expo-auth-session/providers/google";
@@ -42,7 +43,9 @@ const validateEmail = (email: string): boolean => {
 };
 
 export default function LoginScreen() {
-  const router = useRouter();
+    const { login } = useAuth(); // 👈 Get the login function from context
+
+    const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -131,9 +134,9 @@ export default function LoginScreen() {
         rememberMe: true,
       });
 
-      await AsyncStorage.setItem('accessToken', response.data.accessToken);
-      await AsyncStorage.setItem('userId', response.data.userId);
-      console.log("response",response);
+    //   await AsyncStorage.setItem('accessToken', response.data.accessToken);
+    //   await AsyncStorage.setItem('userId', response.data.userId);
+      await login(response.data.accessToken, response.data.userId);
       router.replace("/(tabs)");
     } catch (error: any) {
       console.error("Login error:", error);
